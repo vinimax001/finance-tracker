@@ -1,0 +1,46 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: finance-tracker-db
+    environment:
+      POSTGRES_USER: financeuser
+      POSTGRES_PASSWORD: financepass
+      POSTGRES_DB: financedb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../migrations/001_init.sql:/docker-entrypoint-initdb.d/001_init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U financeuser -d financedb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - finance-network
+
+  api:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile
+    container_name: finance-tracker-api
+    environment:
+      STORAGE: postgres
+      DATABASE_URL: "postgres://financeuser:financepass@postgres:5432/financedb?sslmode=disable"
+      HTTP_ADDR: ":8080"
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - finance-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  finance-network:
+    driver: bridge

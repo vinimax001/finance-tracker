@@ -1,0 +1,25 @@
+# Docker Compose para desenvolvimento (apenas PostgreSQL)
+# A aplicação roda localmente com 'go run'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: finance-tracker-db-dev
+    environment:
+      POSTGRES_USER: financeuser
+      POSTGRES_PASSWORD: financepass
+      POSTGRES_DB: financedb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+      - ../migrations/001_init.sql:/docker-entrypoint-initdb.d/001_init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U financeuser -d financedb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data_dev:
+    driver: local
