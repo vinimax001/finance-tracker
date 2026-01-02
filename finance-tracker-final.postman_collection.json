@@ -1,0 +1,200 @@
+{
+	"info": {
+		"_postman_id": "18ab18ba-1df9-4e20-a792-49f708450960",
+		"name": "finance-tracker-final",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49595137",
+		"_collection_link": "https://danielsilvavieiragundim-4141129.postman.co/workspace/Daniel-Vieira's-Workspace~4b0576d4-44b0-4f0e-8e85-b285f6bee829/collection/49595137-18ab18ba-1df9-4e20-a792-49f708450960?action=share&source=collection_link&creator=49595137"
+	},
+	"item": [
+		{
+			"name": "Listar transações",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"type\": \"expense\",\r\n  \"category\": \"rent\",\r\n  \"amount_cents\": 150000,\r\n  \"occurred_at\": \"2025-10-15T10:00:00Z\",\r\n  \"description\": \"Aluguel\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "SEU_ENDPOINT_AQUI:80/transactions?from=2025-11-01&to=2025-11-30",
+					"host": [
+						"SEU_ENDPOINT_AQUI"
+					],
+					"port": "80",
+					"path": [
+						"transactions"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "2025-11-01"
+						},
+						{
+							"key": "to",
+							"value": "2025-11-30"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Relatorio",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"type\": \"expense\",\r\n  \"category\": \"rent\",\r\n  \"amount_cents\": 150000,\r\n  \"occurred_at\": \"2025-10-15T10:00:00Z\",\r\n  \"description\": \"Aluguel\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "SEU_ENDPOINT_AQUI:8080/transactions?from=2025-10-01&to=2025-10-31",
+					"host": [
+						"SEU_ENDPOINT_AQUI"
+					],
+					"port": "8080",
+					"path": [
+						"transactions"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "2025-10-01"
+						},
+						{
+							"key": "to",
+							"value": "2025-10-31"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "SEU_ENDPOINT_AQUI:8080/health",
+					"host": [
+						"SEU_ENDPOINT_AQUI"
+					],
+					"port": "8080",
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Criar transação receita",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"type\": \"income\",\r\n  \"category\": \"salary\",\r\n  \"amount_cents\": 500000,\r\n  \"description\": \"Salário de Outubro\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "SEU_ENDPOINT_AQUIt:8080/transactions",
+					"host": [
+						"SEU_ENDPOINT_AQUIt"
+					],
+					"port": "8080",
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Criar transação despesa",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"type\": \"expense\",\r\n  \"category\": \"rent\",\r\n  \"amount_cents\": 150000,\r\n  \"description\": \"Aluguel\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "SEU_ENDPOINT_AQUI:8080/transactions",
+					"host": [
+						"SEU_ENDPOINT_AQUI"
+					],
+					"port": "8080",
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deletar transação",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "SEU_ENDPOINT_AQUI:8080/transactions/{id}",
+					"host": [
+						"SEU_ENDPOINT_AQUI"
+					],
+					"port": "8080",
+					"path": [
+						"transactions",
+						"{id}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
