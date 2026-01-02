@@ -120,7 +120,12 @@ make docker-run
 |----------|-----------|--------|-------------|
 | `STORAGE` | Tipo de armazenamento: `memory` ou `postgres` | `memory` | Não |
 | `HTTP_ADDR` | Endereço do servidor HTTP | `:8080` | Não |
-| `DATABASE_URL` | Connection string do PostgreSQL | - | Sim (se `STORAGE=postgres`) |
+| `RDS_SECRET_NAME` | Nome do secret no AWS Secrets Manager (para RDS) | - | Sim (se usar Secrets Manager) |
+| `DB_HOST` | Host do PostgreSQL | - | Sim (se `STORAGE=postgres` com Secrets Manager) |
+| `DB_PORT` | Porta do PostgreSQL | - | Sim (se `STORAGE=postgres` com Secrets Manager) |
+| `DB_NAME` | Nome do database PostgreSQL | - | Sim (se `STORAGE=postgres` com Secrets Manager) |
+| `DATABASE_URL` | Connection string completa do PostgreSQL | - | Sim (se `STORAGE=postgres` sem Secrets Manager) |
+| `AWS_REGION` | Região AWS para S3 e Secrets Manager | `us-east-1` | Não |
 
 ### 🛠️ Comandos Úteis (Makefile)
 
@@ -140,6 +145,7 @@ make run-pg     # Executar com PostgreSQL
 - `GET /transactions?from=YYYY-MM-DD&to=YYYY-MM-DD`
 - `DELETE /transactions/{id}`
 - `GET /summary/monthly?year=YYYY&month=MM`
+- `GET /reports/monthly?year=YYYY&month=MM` (gera CSV no S3)
 
 ### Exemplo de uso (curl)
 ```bash
@@ -161,6 +167,9 @@ curl -s "localhost:8080/transactions?from=2025-10-01&to=2025-10-31"
 
 # Resumo do mês
 curl -s "localhost:8080/summary/monthly?year=2025&month=10"
+
+# Gerar relatório mensal em CSV (salvo no S3)
+curl -s "localhost:8080/reports/monthly?year=2025&month=10"
 ```
 
 ---
@@ -207,7 +216,12 @@ curl -s "localhost:8080/summary/monthly?year=2025&month=10"
 - **Método:** GET
 - **URL:** `http://localhost:8080/summary/monthly?year=2025&month=10`
 
-### 6. Deletar Transação
+### 6. Gerar Relatório Mensal (CSV no S3)
+- **Método:** GET
+- **URL:** `http://localhost:8080/reports/monthly?year=2025&month=10`
+- *Retorna JSON com informações do arquivo CSV gerado no S3*
+
+### 7. Deletar Transação
 - **Método:** DELETE
 - **URL:** `http://localhost:8080/transactions/{id}`
 - *Substitua `{id}` pelo UUID da transação*
@@ -218,6 +232,7 @@ curl -s "localhost:8080/summary/monthly?year=2025&month=10"
 
 - **Valores monetários:** Sempre em centavos (ex: `500000` = R$ 5.000,00)
 - **Data da transação:** Automaticamente definida como data/hora atual no servidor
+- **Relatórios mensais:** Gerados em CSV e salvos no S3 bucket configurado
 - **Storage Memory:** Dados são perdidos ao reiniciar a aplicação
 - **Storage PostgreSQL:** Dados são persistidos no banco de dados
 
