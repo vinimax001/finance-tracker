@@ -262,3 +262,20 @@ finance-tracker/
 ├── go.mod
 └── README.md
 ```
+
+---
+
+<table>
+  <tr>
+    <td>
+      <img src="https://github.com/vinimax001.png" width="100px" />
+    </td>
+    <td>
+      Feito por <a href="https://github.com/vinimax001">Vinicius Aguiar.</a> 
+    </td>
+  </tr>
+</table>
+
+## 🏆 Licença
+
+The [MIT License](./LICENSE).
